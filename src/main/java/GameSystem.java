@@ -63,11 +63,6 @@ public class GameSystem {
         return playerList;
     }
 
-    public static void setPlayerList(List<Player> playerList) {
-        GameSystem.playerList = new ArrayList<>(playerList);
-        Player.setPlayerCnt(playerList.size());
-    }
-
     public static void setInitialBoard(Board initialBoard) {
         GameSystem.initialBoard = initialBoard;
     }

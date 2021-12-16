@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Board {
-    private static final int MAX_SIZE = 20;
+    public static final int MAX_SIZE = 20;
 
     private int rowSize;
     private int columnSize;
@@ -71,10 +71,6 @@ public class Board {
 
     public Chess[][] getChess() {
         return chess;
-    }
-
-    public static int getMaxSize() {
-        return MAX_SIZE;
     }
 
     public int getRowSize() {
@@ -178,7 +174,7 @@ public class Board {
         }
     }
 
-    public List<Chess[]> addChess(Chess chess, boolean cheatMode) {
+    protected List<Chess[]> addChess(Chess chess, boolean cheatMode) {
         List<Chess[]> list = checkPosition(chess, cheatMode);
 
         if (list != null) {
@@ -188,7 +184,7 @@ public class Board {
         return list;
     }
 
-    public List<int[]> showAllPossibleMoves(ChessColor color, boolean cheatMode) {
+    protected List<int[]> showAllPossibleMoves(ChessColor color, boolean cheatMode) {
         List<int[]> moves = new ArrayList<>();
 
         for (int i = 0; i < rowSize; i++) {
@@ -207,11 +203,11 @@ public class Board {
         return moves;
     }
 
-    public boolean checkMovable(ChessColor color, boolean cheatMode) {
+    protected boolean checkMovable(ChessColor color, boolean cheatMode) {
         return !showAllPossibleMoves(color, cheatMode).isEmpty();
     }
 
-    public ChessColor calculateWinner() {
+    protected ChessColor calculateWinner() {
         int[] numberOfChess = new int[ChessColor.values().length];
 
         for (int i = 0; i < rowSize; i++) {
@@ -231,7 +227,7 @@ public class Board {
         }
     }
 
-    public void changeInto(List<Chess[]> list) {
+    protected void changeInto(List<Chess[]> list) {
         for (Chess[] modifiedChess : list) {
             Chess newChess = modifiedChess[1];
             int i = newChess.getRowIndex(), j = newChess.getColumnIndex();
@@ -240,7 +236,7 @@ public class Board {
         }
     }
 
-    public void changeBack(List<Chess[]> list) {
+    protected void changeBack(List<Chess[]> list) {
         for (Chess[] modifiedChess : list) {
             Chess newChess = modifiedChess[0];
             int i = newChess.getRowIndex(), j = newChess.getColumnIndex();
