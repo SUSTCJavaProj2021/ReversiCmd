@@ -6,18 +6,21 @@ import main.java.game.Board;
 import main.java.game.Game;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class HardAIPlayer extends AIPlayer {
-    public HardAIPlayer() {
-        super("_AI_HARD");
+public class TestAIPlayer extends AIPlayer {
+    public TestAIPlayer() {
+        super("_AI_TEST");
 
-        this.mode = Mode.HARD;
+        this.mode = Mode.TEST;
         --playerCnt;
-        pid = AI_PID_OFFSET + 2;
+        pid = AI_PID_OFFSET + 114514;
     }
 
-    private static final int RANDOM_TIMES = 50;
+    private static final int RANDOM_TIMES = 100;
 
     private boolean MonteCarlo(Chess chess, Board initialBoard) {
         Board board = new Board(initialBoard);
@@ -28,7 +31,6 @@ public class HardAIPlayer extends AIPlayer {
 
         for (int pauseCnt = 0; pauseCnt < 2; color = ChessColor.dual(color)) {
             List<int[]> list = board.showAllPossibleMoves(color, false);
-            double[] weight = new double[list.size()];
 
             if (list.isEmpty()) {
                 ++pauseCnt;
@@ -37,15 +39,7 @@ public class HardAIPlayer extends AIPlayer {
                 pauseCnt = 0;
             }
 
-            for (int i = 0; i < list.size(); i++) {
-                int[] move = list.get(i);
-                List<Chess[]> change = board.addChess(new Chess(color, move[0], move[1]), false);
-
-                weight[i] = borderWeight(move, board) + board.showAllPossibleMoves(ChessColor.dual(color), false).size();
-                board.changeBack(change);
-            }
-
-            int[] move = list.get(weightedSelect(weight));
+            int[] move = list.get(random.nextInt(list.size()));
 
             board.addChess(new Chess(color, move[0], move[1]), false);
         }
@@ -61,8 +55,6 @@ public class HardAIPlayer extends AIPlayer {
         int maxWinTimes = -1;
 
         for (int[] move: moves) {
-            assert !board.isCaptured(move[0], move[1]);
-
             int winTimes = 0;
 
             for (int i = 0; i < RANDOM_TIMES; i++) {

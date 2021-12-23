@@ -4,7 +4,8 @@ public enum Mode {
     EASY(new EasyAIPlayer()),
     NORMAL(new NormalAIPlayer()),
     HARD(new HardAIPlayer()),
-    HELL(new HellAIPlayer());
+    HELL(new HellAIPlayer()),
+    TEST(new TestAIPlayer());
 
     private final AIPlayer player;
 

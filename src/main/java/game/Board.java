@@ -107,7 +107,7 @@ public class Board {
         return i >= 0 && i < rowSize && j >= 0 && j < columnSize && !banned[i][j];
     }
 
-    private boolean isCaptured(int i, int j) {
+    public boolean isCaptured(int i, int j) {
         return chess[i][j].getColor() != ChessColor.NULL;
     }
 
@@ -123,13 +123,13 @@ public class Board {
     /*
     todo: The method checkEnd is slow.
     */
-    private List<Chess[]> checkPosition(Chess chess, boolean cheatMode) {
+    public List<Chess[]> checkPosition(Chess chess, boolean cheatMode) {
         int i = chess.getRowIndex(), j = chess.getColumnIndex();
 
         if (!isValid(i, j) || isCaptured(i, j)) {
-            return null;
+            return new ArrayList<>();
         } else {
-            List<Chess[]> chessList = new ArrayList<>(0);
+            List<Chess[]> chessList = new ArrayList<>();
 
             for (Direction direction : Direction.values()) {
                 int[] position = direction.move(i, j);
@@ -166,7 +166,7 @@ public class Board {
             }
 
             if (!cheatMode && chessList.isEmpty()) {
-                return null;
+                return chessList;
             }
 
             chessList.add(new Chess[] {this.chess[i][j], chess});
@@ -174,17 +174,17 @@ public class Board {
         }
     }
 
-    protected List<Chess[]> addChess(Chess chess, boolean cheatMode) {
+    public List<Chess[]> addChess(Chess chess, boolean cheatMode) {
         List<Chess[]> list = checkPosition(chess, cheatMode);
 
-        if (list != null) {
+        if (!list.isEmpty()) {
             changeInto(list);
         }
 
         return list;
     }
 
-    protected List<int[]> showAllPossibleMoves(ChessColor color, boolean cheatMode) {
+    public List<int[]> showAllPossibleMoves(ChessColor color, boolean cheatMode) {
         List<int[]> moves = new ArrayList<>();
 
         for (int i = 0; i < rowSize; i++) {
@@ -193,7 +193,7 @@ public class Board {
                     Chess tempChess = new Chess(i, j);
                     tempChess.setColor(color);
 
-                    if (checkPosition(tempChess, cheatMode) != null) {
+                    if (!checkPosition(tempChess, cheatMode).isEmpty()) {
                         moves.add(new int[] {i, j});
                     }
                 }
@@ -207,7 +207,7 @@ public class Board {
         return !showAllPossibleMoves(color, cheatMode).isEmpty();
     }
 
-    protected ChessColor calculateWinner() {
+    public ChessColor calculateWinner() {
         int[] numberOfChess = new int[ChessColor.values().length];
 
         for (int i = 0; i < rowSize; i++) {
@@ -227,8 +227,8 @@ public class Board {
         }
     }
 
-    protected void changeInto(List<Chess[]> list) {
-        for (Chess[] modifiedChess : list) {
+    public void changeInto(List<Chess[]> list) {
+        for (Chess[] modifiedChess: list) {
             Chess newChess = modifiedChess[1];
             int i = newChess.getRowIndex(), j = newChess.getColumnIndex();
 
@@ -236,8 +236,8 @@ public class Board {
         }
     }
 
-    protected void changeBack(List<Chess[]> list) {
-        for (Chess[] modifiedChess : list) {
+    public void changeBack(List<Chess[]> list) {
+        for (Chess[] modifiedChess: list) {
             Chess newChess = modifiedChess[0];
             int i = newChess.getRowIndex(), j = newChess.getColumnIndex();
 

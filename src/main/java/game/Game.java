@@ -155,6 +155,7 @@ public class Game {
 
         stepList.add(new Step(player[curPlayer], chess, list));
         curPlayer ^= 1;
+        pauseCnt = 0;
 
         return isMovable();
     }
